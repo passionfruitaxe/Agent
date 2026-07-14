@@ -1,0 +1,13 @@
+{
+  "name": "ai-agent",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:server": "bun run --filter @ai-agent/server dev",
+    "dev:web": "bun run --filter @ai-agent/web dev",
+    "build": "bun run --filter '*' build"
+  }
+}

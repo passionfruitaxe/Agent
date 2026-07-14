@@ -1,0 +1,24 @@
+node_modules/
+dist/
+.env
+*.local
+.DS_Store
+*.log
+bun.lock
+
+# Vector store data
+lancedb-data/
+
+# Model weights
+model/weights/
+*.bin
+*.safetensors
+
+# Python
+__pycache__/
+.venv/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
