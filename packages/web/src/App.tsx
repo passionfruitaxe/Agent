@@ -1,45 +1,42 @@
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
-import { useState } from "react";
+import { NavLink, Navigate, Route, Routes } from "react-router-dom";
+import ChatRaw from "./pages/ChatRaw";
+import ChatSdk from "./pages/ChatSdk";
 
-export default function Page() {
-  const { messages, sendMessage, status } = useChat({
-    transport: new DefaultChatTransport({
-      api: "http://localhost:3000/api/chat",
-    }),
-  });
-  const [input, setInput] = useState("");
-
+export default function App() {
   return (
-    <>
-      {messages.map(message => (
-        <div key={message.id}>
-          {message.role === "user" ? "User: " : "AI: "}
-          {message.parts.map((part, index) =>
-            part.type === "text" ? <span key={index}>{part.text}</span> : null,
-          )}
-        </div>
-      ))}
+    <div className="app">
+      <header className="app-header">
+        <h1 className="app-brand">
+          <span className="mark">◆</span>
+          AI Agent
+        </h1>
+        <nav className="app-nav" aria-label="Routes">
+          <NavLink
+            to="/sdk"
+            className={({ isActive }) =>
+              "nav-link" + (isActive ? " is-active" : "")
+            }
+          >
+            SDK 版
+          </NavLink>
+          <NavLink
+            to="/raw"
+            className={({ isActive }) =>
+              "nav-link" + (isActive ? " is-active" : "")
+            }
+          >
+            手写版
+          </NavLink>
+        </nav>
+      </header>
 
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          if (input.trim()) {
-            sendMessage({ text: input });
-            setInput("");
-          }
-        }}
-      >
-        <input
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          disabled={status !== "ready"}
-          placeholder='Say something...'
-        />
-        <button type='submit' disabled={status !== "ready"}>
-          Submit
-        </button>
-      </form>
-    </>
+      <main className="app-main">
+        <Routes>
+          <Route path="/" element={<Navigate to="/sdk" replace />} />
+          <Route path="/sdk" element={<ChatSdk />} />
+          <Route path="/raw" element={<ChatRaw />} />
+        </Routes>
+      </main>
+    </div>
   );
 }

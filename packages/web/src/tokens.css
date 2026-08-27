@@ -1,0 +1,76 @@
+/* Hallmark · genre: atmospheric · scope: app surface (chat) · no macrostructure/nav/footer/hero
+ * audience: solo developer learning AI agents · use: chat with DeepSeek · tone: technical
+ * palette axes: paper dark (<30%) · display sans (Space Grotesk) · accent warm (amber ~65°)
+ * pre-emit critique: P4 H4 E4 S4 R5 V4
+ */
+
+:root {
+  /* paper / surfaces — elevated by lightness, not shadow */
+  --color-paper:        oklch(20% 0.012 60);
+  --color-paper-2:      oklch(25% 0.014 60);
+  --color-paper-3:      oklch(31% 0.016 60);
+  --color-input-field:  oklch(23% 0.013 60);
+
+  /* ink / text */
+  --color-ink:          oklch(96% 0.008 60);
+  --color-ink-muted:    oklch(74% 0.010 60);
+  --color-ink-faint:    oklch(54% 0.010 60);
+
+  /* rules */
+  --color-rule:         oklch(33% 0.016 60);
+  --color-rule-strong:  oklch(42% 0.018 60);
+
+  /* accent — single warm amber */
+  --color-accent:        oklch(82% 0.150 65);
+  --color-accent-hover:  oklch(88% 0.135 65);
+  --color-accent-soft:   oklch(82% 0.150 65 / 0.16);
+  --color-accent-ink:    oklch(22% 0.030 65);
+
+  --color-focus:        oklch(82% 0.150 65);
+
+  /* blooms — two warm, fixed, no animation */
+  --color-bloom-1:       oklch(58% 0.170 50 / 0.16);
+  --color-bloom-2:       oklch(56% 0.150 12 / 0.12);
+
+  /* fonts — 2 families, display + body */
+  --font-display: "Space Grotesk", "Geist", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* type scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-display: clamp(1.75rem, 1.2rem + 2.2vw, 2.75rem);
+
+  /* 4pt spacing */
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
+
+  /* motion */
+  --dur-fast: 120ms;
+  --dur-short: 200ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* z-index scale */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 100;
+
+  color-scheme: dark;
+}
