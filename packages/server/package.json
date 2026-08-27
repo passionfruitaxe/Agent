@@ -8,6 +8,7 @@
     "build": "bun build src/index.ts --outdir dist --target bun"
   },
   "dependencies": {
+    "@ai-sdk/deepseek": "^3.0.35",
     "@ai-sdk/openai": "^4.0.13",
     "@lancedb/lancedb": "^0.31.0",
     "ai": "^7.0.26",

@@ -4,7 +4,6 @@ dist/
 *.local
 .DS_Store
 *.log
-bun.lock
 
 # Vector store data
 lancedb-data/

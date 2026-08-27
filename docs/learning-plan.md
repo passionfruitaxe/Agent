@@ -30,12 +30,21 @@
 - 理解参数：`model`、`messages`、`temperature`、`maxTokens`、`stream`
 - 产出：`chat-basic.ts`，能终端对话
 
-### Task 2.2 — 实现流式输出
+### Task 2.2 — 实现流式输出（先手写，再用 SDK）
 
-- 用 Vercel AI SDK 的 `streamText` 实现流式返回
-- 后端用 Hono 搭一个 `/chat` 接口，返回 SSE 流
-- 前端用 React + Vercel AI SDK 的 `useChat` hook 消费，做打字机效果
-- 产出：前后端联通的聊天 Demo
+**Task 2.2a — 手写最小 SSE 实现（不用 SDK 的流式封装）**
+
+- 后端：Hono 写一个 `/chat-raw` 接口，不碰 `ai` 包的流式工具，直接 `new Response(readableStream)`，手动拼 SSE 帧（`data: {"token":"..."}\n\n`），从 `streamText` 的原始迭代器里逐 chunk 写入
+- 前端：不用 `useChat`，用原生 `fetch` + `ReadableStream` + `TextDecoder` 手动解析 SSE 帧，自己维护消息状态、自己实现打字机效果
+- 目标是理解 SSE 协议本质：HTTP 响应里一段一段往外写文本 + 约定好的帧格式（`data:` 字段、`\n\n` 分隔、chunked transfer）
+- 产出：`server/src/routes/chat-raw.ts` + `web/src/pages/ChatRaw.tsx`
+
+**Task 2.2b — 用 SDK 重写，对比理解**
+
+- 后端用 Vercel AI SDK 的 `streamText` + `toUIMessageStream` + `createUIMessageStreamResponse`
+- 前端用 `useChat` hook 消费，实现同样的打字机效果
+- 对比两者：手写版让你懂协议，SDK 版帮你处理状态管理、乐观更新、中断恢复这些脏活
+- 产出：前后端联通的聊天 Demo（`/chat` 接口 + `useChat` 页面）
 
 ### Task 2.3 — 系统性练习 Prompt Engineering
 
