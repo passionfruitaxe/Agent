@@ -7,6 +7,7 @@
   ],
   "scripts": {
     "dev:server": "bun run --filter @ai-agent/server dev",
+    "debug:server": "bun run --filter @ai-agent/server debug",
     "dev:web": "bun run --filter @ai-agent/web dev",
     "build": "bun run --filter '*' build"
   }

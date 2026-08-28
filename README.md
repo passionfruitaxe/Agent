@@ -52,17 +52,40 @@ monorepo 子包目录，存放项目的三个核心包。
 
 ```
 server/src/
-├── routes/        API 路由定义
-├── llm/           LLM 能力层
-├── rag/           RAG 检索管线
-├── agent/         Agent 编排引擎
-│   └── tools/     Agent 可调用的工具集
-└── vector-store/  向量数据库适配层
+├── index.ts           Bun 服务入口
+├── app.ts             Hono 应用组合根
+├── config/            环境变量与业务常量
+├── routes/            URL/HTTP method 与 Controller 绑定
+├── controllers/       HTTP、SSE 请求与响应适配
+├── services/          可复用业务用例编排
+├── schemas/           Zod 外部输入校验
+├── domain/            不依赖框架的业务类型与规则
+├── infrastructure/    LLM、数据库等第三方技术适配
+├── middleware/        CORS、错误处理等横切逻辑
+├── lib/               通用错误、协议类型等基础能力
+├── rag/               RAG 检索管线
+├── agent/             Agent 编排引擎
+│   └── tools/         Agent 可调用的工具集
+└── vector-store/      向量数据库适配层
 ```
 
-**routes/** — 定义对外暴露的 HTTP 接口，包括聊天对话、知识库问答、代码分析等路由，统一处理请求参数校验和 SSE 流式响应。
+server 采用 `routes → controllers → services → domain / infrastructure` 的依赖方向：路由只声明路径，Controller 负责 HTTP/SSE 协议，Service 编排用例，Domain 保持业务契约独立，Infrastructure 集中第三方实现。完整目录职责、依赖规则和 SSE 协议说明见 [`packages/server/README.md`](packages/server/README.md)。
 
-**llm/** — 封装与大语言模型的交互逻辑，包括 LLM 客户端初始化（支持多后端切换）、Prompt 模板管理、流式输出处理，以及 temperature、max_tokens 等推理参数的统一配置。
+**routes/** — 只定义对外 URL、HTTP method 与 Controller 的绑定，不承载参数校验、模型调用或业务编排。
+
+**controllers/** — HTTP/SSE 适配层。解析已校验的输入，调用 Service，并将结果编码成 JSON、AI SDK Stream 或 OpenAI 兼容 SSE。
+
+**services/** — 应用用例层。封装聊天、RAG、Agent 等业务编排，不依赖 Hono Context，因此可复用到 CLI、队列任务等入口。
+
+**schemas/** — 使用 Zod 校验 HTTP 等外部不可信输入，是进入业务层前的唯一校验边界。
+
+**domain/** — 聊天、知识库等核心业务类型与规则；不依赖 Hono、AI SDK、数据库客户端等基础设施。
+
+**infrastructure/** — LLM Provider、数据库、文件系统等第三方能力的具体适配；更换供应商不应波及 Service 和 Domain。
+
+**middleware/** — CORS、统一错误响应、日志等横切逻辑。
+
+**config/** — 环境变量和模型名等统一配置；业务代码不应散落读取 `process.env`。
 
 **rag/** — 实现检索增强生成（Retrieval-Augmented Generation）的完整管线：文档切片策略（按段落或固定 token 数分块）、Embedding 向量生成、向量相似度检索、Rerank 重排序，以及 Context 拼装与超长截断等边界情况处理。
 
